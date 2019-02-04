@@ -44,7 +44,7 @@ private:
 };
 
 
-// Constructor with initial size argument
+// Constructor with initial capacity argument
 template <typename T>
 ExtendableVector<T>::ExtendableVector(size_t arraysize) {
     if (arraysize < 0) {

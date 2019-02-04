@@ -8,9 +8,9 @@ using namespace std;
 template <typename T>
 class FixedVector {
 private:
-    size_t size_;
-    size_t capacity_;
-    T* array_;
+    size_t size_; // number of elements in the data structure
+    size_t capacity_; // length of the array
+    T* array_; // pointer to dynamically allocated array
 
 public:
     // Constructors
@@ -36,17 +36,8 @@ public:
 
 
 // Implementation
-/*
-// Default Constructor: empty vector
-template <typename T>
-FixedVector<T>::FixedVector() {
-    size_ = 0;
-    arraysize_ = 0;
-    array_ = new T[size_];
-}
-*/
 
-// Constructor with initial size argument
+// Constructor with initial capacity argument
 template <typename T>
 FixedVector<T>::FixedVector(size_t arraysize) {
     if (arraysize < 0) {
