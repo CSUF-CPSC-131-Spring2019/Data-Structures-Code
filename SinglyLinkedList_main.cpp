@@ -1,44 +1,67 @@
-#include <cassert>
 #include <iostream>
-#include "SinglyLinkedList.h"
+#include <stdexcept>
+#include <string>
 
-using namespace std;
+#include "SLinkedList.hpp"
+
+using std::cout;
+using std::string;
+using std::to_string;
+using std::ostream;
+using std::endl;
+
+
+class Student
+{
+  private:
+    string name_;
+    int numOfSemesters_ = 0;
+
+  public:
+    Student() = default;
+    Student( string name, int nsem = 1 ) : name_( name ), numOfSemesters_( nsem ) {}
+
+    void updateNSemesters()          { numOfSemesters_++;      }
+    void name( const string & name ) { name_           = name; }
+    void semesters( int n )          { numOfSemesters_ = n;    }
+
+  friend ostream& operator<<( ostream& os, const Student& student );
+};
+
+ostream& operator<<( ostream& os, const Student& student )
+{
+  os << "Name: " << student.name_;
+  os << ". No. of semesters= " << student.numOfSemesters_ << endl;
+  return os;
+}
+
 
 int main() {
-    const int MILLION = 1000000;
 
-    cout << "Creating linked list with 1 million elements...";
-    SinglyLinkedList<int> list;
-    assert(list.isEmpty());
+    SLinkedList<Student> students;
 
-    for (int i = 1; i <= MILLION; i++) {
-        list.pushFront(i);
-        assert(!list.isEmpty());
+    Student s;
+    for (int i = 0; i < 5; i++) {
+        s.name("Student_" + to_string(i));
+        s.semesters(2);
+        students.prepend(s);
     }
-    assert(MILLION == list.getSize());
 
-    // // iteration
-    // bool iterated = false;
-    // int count = 0;
-    // for (SinglyLinkedListIterator<int> i(&list); !i.past_end(); i.advance()) {
-    //     iterated = true;
-    //     count++;
-    // }
-    // assert(iterated);
-    // assert(MILLION == count);
+    SLinkedList<Student> classRoster( students );
+    for( int i = 1; i <= 5; i++ )
+    {
+        s.name( "Student_" + to_string( i*10 ) );
+        s.semesters( 2 );
+        classRoster.append( s );
+    }
 
-    cout << endl << "Clearing list...";
-    list.clear();
-    cout << endl;
-    assert(0 == list.getSize());
-    assert(list.isEmpty());
+    students = classRoster;
+    cout << classRoster.front() << classRoster.back();
 
-    // // iteration through empty list
-    // iterated = false;
-    // for (SinglyLinkedListIterator<int> i(&list); !i.past_end(); i.advance()) {
-    //     iterated = true;
-    // }
-    // assert(!iterated);
-
-    return 0;
+    while (!students.empty()) {
+        cout << students.front();
+        students.removeFront();
+    }
 }
+
+// template SLinkedList<Student>; // good idea to explicitly instantiate the templated class to force the compiler to check it 
