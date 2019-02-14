@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "SLinkedList.hpp"
+#include "SinglyLinkedList.hpp"
 
 using std::cout;
 using std::string;
@@ -38,7 +38,7 @@ ostream& operator<<( ostream& os, const Student& student )
 
 int main() {
 
-    SLinkedList<Student> students;
+    SinglyLinkedList<Student> students;
 
     Student s;
     for (int i = 0; i < 5; i++) {
@@ -47,7 +47,7 @@ int main() {
         students.prepend(s);
     }
 
-    SLinkedList<Student> classRoster( students );
+    SinglyLinkedList<Student> classRoster( students );
     for( int i = 1; i <= 5; i++ )
     {
         s.name( "Student_" + to_string( i*10 ) );
@@ -60,8 +60,9 @@ int main() {
 
     while (!students.empty()) {
         cout << students.front();
-        students.removeFront();
+        students.pop_front();
     }
 }
 
-// template SLinkedList<Student>; // good idea to explicitly instantiate the templated class to force the compiler to check it 
+// template struct Node<Student>;
+// template class SinglyLinkedList<Student>; // good idea to explicitly instantiate the templated class to force the compiler to check it 

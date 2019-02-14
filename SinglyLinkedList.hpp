@@ -1,12 +1,12 @@
 #pragma once
 
 #include <stdexcept>
-using namespace std;
 
 template<typename T>
 struct Node {
     T data;
     Node<T>* next;
+
     Node() = delete;            // Intentionally no default constructor
     Node( const T & element ) : data( element ), next( nullptr ) {}
 };
@@ -26,32 +26,22 @@ public:
 
     // Getters / Setters
     bool empty();
-    int size(); // NOT IMPLEMENTED !!
+    int size() = delete; // INTENTIONALLY NOT IMPLEMENTED !!
 
     void append(  const T& );
     void prepend( const T& );
-    void insertAfter(Node<T>*,  const T& );
-    void removeAfter(Node<T>*);
+    void insertAfter( Node<T>*,  const T& );
+    void removeAfter( Node<T>* );
 
     void pop_front();      // remove element at front of list
     T&   front();          // return list's front element
     T&   back();           // return list's back element
 
     void clear();
-
 };
 
 template<typename T>
-SinglyLinkedList<T>::SinglyLinkedList() {
-    head = nullptr;
-    tail = nullptr;
-}
-
-template<typename T>
-int SinglyLinkedList<T>::size() {
-  // NOT IMPLEMENTED!!!
-    return 0;
-}
+SinglyLinkedList<T>::SinglyLinkedList() : head( nullptr ), tail( nullptr ) {}
 
 template<typename T>
 bool SinglyLinkedList<T>::empty() {
@@ -74,7 +64,7 @@ void SinglyLinkedList<T>::append( const T& newData ) {
 
 template<typename T>
 void SinglyLinkedList<T>::prepend( const T& newData ) {
-  Node<T> * newNode = new Node<T>(newData);   // create new node
+  Node<T> * newNode = new Node<T>( newData );   // create new node
 
   if (head == nullptr) { // list empty
      head = newNode;
@@ -95,7 +85,7 @@ void SinglyLinkedList<T>::insertAfter(Node<T>* curNode, const T& newData) {
     if (head == nullptr) {                // List empty
         head = newNode;
         tail = newNode;
-    } else if (curNode == tail) {       // Insert after tail
+    } else if (curNode == tail) {         // Insert after tail
         tail->next = newNode;
         tail = newNode;
     } else {
@@ -107,6 +97,8 @@ void SinglyLinkedList<T>::insertAfter(Node<T>* curNode, const T& newData) {
 
 template<typename T>
 void SinglyLinkedList<T>::removeAfter(Node<T>* curNode) {
+  if( empty() ) throw std::length_error( "empty list" );
+
   // Special case, remove head
   if (curNode == nullptr && head != nullptr) {
      Node<T> *sucNode = head->next;
@@ -160,7 +152,7 @@ SinglyLinkedList<T>::~SinglyLinkedList() {
 }
 
 template <typename T>
-SinglyLinkedList<T>::SinglyLinkedList( const SinglyLinkedList<T> & original ) {
+SinglyLinkedList<T>::SinglyLinkedList( const SinglyLinkedList<T> & original ) : SinglyLinkedList() {
   // Walk the original list adding copies of the elements to this list maintaining order
   for( Node<T> * position = original.head; position != nullptr; position = position->next ) {
     append( position->data );
@@ -172,7 +164,7 @@ SinglyLinkedList<T> & SinglyLinkedList<T>::operator=( const SinglyLinkedList<T> 
   if( this != &rhs ) // avoid self assignment
   {
     // Release the contents of this list first
-    clear();  // As an optimization might be possible by reusing already allocated nodes
+    clear();  // An optimization might be possible by reusing already allocated nodes
 
     // Walk the right hand side list adding copies of the elements to this list maintaining order
     for( Node<T> * position = rhs.head; position != nullptr; position = position->next ) {
