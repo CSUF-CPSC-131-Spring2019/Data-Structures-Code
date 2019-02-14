@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "SinglyLinkedList.hpp"
+#include "DoublyLinkedList.hpp"
 
 using std::cout;
 using std::string;
@@ -38,7 +38,7 @@ ostream& operator<<( ostream& os, const Student& student )
 
 int main() {
 
-    SinglyLinkedList<Student> students;
+    DoublyLinkedList<Student> students;
 
     Student s;
     for (int i = 0; i < 5; i++) {
@@ -47,7 +47,7 @@ int main() {
         students.prepend(s);
     }
 
-    SinglyLinkedList<Student> classRoster( students );
+    DoublyLinkedList<Student> classRoster( students ); // copy constructor
     for( int i = 1; i <= 5; i++ )
     {
         s.name( "Student_" + to_string( i*10 ) );
@@ -55,7 +55,7 @@ int main() {
         classRoster.append( s );
     }
 
-    students = classRoster;
+    students = classRoster; // assignment operator
     cout << classRoster.front() << classRoster.back();
 
     while (!students.empty()) {
@@ -65,4 +65,4 @@ int main() {
 }
 
 // template struct Node<Student>;
-// template class SinglyLinkedList<Student>; // good idea to explicitly instantiate the templated class to force the compiler to check it
+// template class DoublyLinkedList<Student>; // good idea to explicitly instantiate the templated class to force the compiler to check it
