@@ -1,5 +1,7 @@
 #pragma once
 
+// comment line
+
 #include <stdexcept>
 #include <algorithm> // needed for std::max in ExtendableVector::insert()
 using namespace std;
