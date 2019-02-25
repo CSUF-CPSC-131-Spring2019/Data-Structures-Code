@@ -1,14 +1,14 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "StackLinkedList.hpp"
+#include "StackArray.hpp"
 
 using std::cout;
 using std::endl;
 
 int main() {
 
-    StackLinkedList<int> myStack;
+    StackArray<int> myStack(10); // Array-based stack with capacity 10
 
     cout << "Pushing 10 ..." << endl;
     myStack.push(10);

@@ -8,7 +8,6 @@ class StackLinkedList {
 private:
     SinglyLinkedList<T> list;
 public:
-    // Constructors
     StackLinkedList() = default;
 
     void push(  const T& x); // Inserts x on top of stack
