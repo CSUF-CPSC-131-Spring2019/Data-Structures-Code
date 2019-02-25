@@ -38,7 +38,7 @@ public:
     T&   back();           // return list's back element
 
     void clear();
-};
+  };
 
 template<typename T>
 SinglyLinkedList<T>::SinglyLinkedList() : head( nullptr ), tail( nullptr ) {}
