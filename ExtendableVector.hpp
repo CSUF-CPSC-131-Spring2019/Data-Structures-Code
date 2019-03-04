@@ -1,23 +1,12 @@
 #pragma once
 
-// comment line
-
 #include <stdexcept>
-#include <algorithm> // needed for std::max in ExtendableVector::insert()
-using namespace std;
-
-const size_t DEFAULT_CAPACITY = 100;
-
-#pragma once
-
-#include <stdexcept>
-using namespace std;
-
 
 // Declaration
 template <typename T>
 class ExtendableVector {
 private:
+    static const size_t DEFAULT_CAPACITY = 100;
     size_t size_;
     size_t capacity_;
     T* array_;
@@ -25,17 +14,17 @@ private:
 public:
     // Constructors
     ExtendableVector(size_t arraysize = DEFAULT_CAPACITY);
-    ExtendableVector(const ExtendableVector&);
-    ExtendableVector& operator=(const ExtendableVector&); // Assignment operator
+    ExtendableVector(const ExtendableVector& input);
+    ExtendableVector& operator=(const ExtendableVector& rhs); // Assignment operator
     ~ExtendableVector(); // destructor
 
     // Getters / Setters
-    T& at(size_t);
-    T& operator[](size_t);
-    void push_back(const T&);
-    void set(size_t, const T&);
-    void erase(size_t);
-    void insert(size_t, const T&);
+    T& at(size_t index );
+    T& operator[](size_t index );
+    void push_back(const T& value );
+    void set(size_t index, const T& value );
+    void erase(size_t index );
+    void insert(size_t beforeIndex, const T& value);
     size_t size();
     bool empty();
     void clear();
@@ -45,13 +34,9 @@ private:
 
 };
 
-
 // Constructor with initial capacity argument
 template <typename T>
 ExtendableVector<T>::ExtendableVector(size_t arraysize) {
-    if (arraysize < 0) {
-        throw invalid_argument("size is less than 0");
-    }
     size_ = 0;
     capacity_ = arraysize;
     array_ = new T[capacity_];
@@ -75,8 +60,8 @@ void ExtendableVector<T>::clear() {
 // Getter
 template <typename T>
 T& ExtendableVector<T>::at(size_t index) {
-    if ((index < 0) || (index >= size_)) {
-        throw range_error("index out of bounds");
+    if (index >= size_) {
+        throw std::range_error("index out of bounds");
     }
     return array_[index];
 }
@@ -93,19 +78,24 @@ void ExtendableVector<T>::push_back(const T &value) {
 // Overloaded Array-Access Operator
 template <typename T>
 T& ExtendableVector<T>::operator[](size_t index) {
-    return array_[index];
+    return array_[index]; // Note: array bounds intentionally not checking
 }
 
 // Setter
 template <typename T>
 void ExtendableVector<T>::set(size_t index, const T &value) {
-    array_[index] = value;
+    at( index ) = value;  // delegate to at() leveraging error checking
 }
 
 // Removes element from position. Elements from higher positions are shifted back to fill gap.
 // Vector size decrements
 template <typename T>
 void ExtendableVector<T>::erase(size_t index) {
+    if (index >= size_) {
+      throw std::range_error( "index out of bounds" );
+    }
+
+    // move elements to close the gap from the left and working right
     for (int j = index+1; j < size_; j++) // shift elements to the left
         array_[j-1] = array_[j];
     size_--;
@@ -113,12 +103,19 @@ void ExtendableVector<T>::erase(size_t index) {
 
 // Copies x to element at position. Items at that position and higher are shifted over to make room. Vector size increments.
 template <typename T>
-void ExtendableVector<T>::insert(size_t index, const T &value) {
+void ExtendableVector<T>::insert(size_t beforeIndex, const T &value) {
+    if ( beforeIndex >  size_ ) {
+      throw std::range_error( "index out of bounds" );
+    }
+
     if (size_ >= capacity_) // If at max capacity, double the capacity
         reserve (2 * capacity_);
-    for (size_t j = size_ - 1; j >= index; j--) // move elements to create space for value
-        array_[j+1] = array_[j]; // shift elements to the right
-    array_[index] = value; // put in empty slot
+
+    // move elements to create space starting from the right and working left
+    for (size_t j = size_; j > beforeIndex; j--)
+        array_[j] = array_[j-1]; // shift elements to the right
+
+    array_[beforeIndex] = value; // put in empty slot
     size_++;
 }
 

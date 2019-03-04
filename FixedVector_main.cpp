@@ -3,6 +3,9 @@
 
 #include "FixedVector.hpp"
 using std::cout;
+using std::string;
+using std::ostream;
+using std::endl;
 
 class Student {
 private:
