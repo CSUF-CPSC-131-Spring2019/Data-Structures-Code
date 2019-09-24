@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 
+ a comment
+
+
 // Declaration
 template <typename T>
 class FixedVector {
@@ -90,7 +93,7 @@ void FixedVector<T>::erase(size_t index) {
         throw std::range_error( "index out of bounds" );
     }
 
-    // move elements to close the gap from the left and working right 
+    // move elements to close the gap from the left and working right
     for (size_t j = index + 1; j < size_; j++) { // shift elements to the left
         array_[j-1] = array_[j];
     }
@@ -105,7 +108,7 @@ void FixedVector<T>::insert(size_t beforeIndex, const T &value) {
     }
     if( beforeIndex >  size_ ) {
         beforeIndex = size_;   // insert at the back
-    } 
+    }
 
     // move elements to create space starting from the right and working left
     for( size_t j = size_; j > beforeIndex; j-- ) {
