@@ -2,9 +2,6 @@
 
 #include <stdexcept>
 
- a comment
-
-
 // Declaration
 template <typename T>
 class FixedVector {
