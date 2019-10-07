@@ -102,6 +102,7 @@ void SinglyLinkedList<T>::removeAfter(Node<T>* curNode) {
   // Special case, remove head
   if (curNode == nullptr && head != nullptr) {
      Node<T> *sucNode = head->next;
+     delete head;
      head = sucNode;
 
      if (sucNode == nullptr) { // Removed last item
@@ -110,6 +111,7 @@ void SinglyLinkedList<T>::removeAfter(Node<T>* curNode) {
   }
   else if (curNode->next != nullptr) {
      Node<T> *sucNode = curNode->next->next;
+     delete curNode->next;
      curNode->next = sucNode;
 
      if (sucNode == nullptr) { // Removed tail
